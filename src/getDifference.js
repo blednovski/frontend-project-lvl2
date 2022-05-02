@@ -1,28 +1,28 @@
 import _ from 'lodash';
-import parser from './parsers.js';
 
-const getDifference = (filepath1, filepath2) => {
-  const object1 = parser(filepath1);
-  const object2 = parser(filepath2);
-  const sortedKeys = _.sortBy([...Object.keys(object1), ...Object.keys(object2)]);
+const getDifference = (data1, data2) => {
+  const sortedKeys = _.uniq([...Object.keys(data1), ...Object.keys(data2)]);
 
-  const getComparison = _.uniq(sortedKeys.flatMap((key) => {
-    if ((_.has(object1, key)) && !(_.has(object2, key))) {
-      return `  - ${key}: ${object1[key]}`;
+  const result = (sortedKeys.map((key) => {
+    const value1 = data1[key];
+    const value2 = data2[key];
+    if (typeof value1 === 'object' && typeof value2 === 'object') {
+      return { type: 'nested', key, children: getDifference(value1, value2) };
     }
-    if ((_.has(object2, key)) && !(_.has(object1, key))) {
-      return `  + ${key}: ${object2[key]}`;
+    if (!_.has(data2, key)) {
+      return { type: 'removed', key, value: value1 };
     }
-    if (object1[key] === object2[key]) {
-      return `    ${key}: ${object2[key]}`;
+    if (!_.has(data1, key)) {
+      return { type: 'added', key, value: value2 };
     }
-    if (object1[key] !== object2[key]) {
-      return [`  - ${key}: ${object1[key]}`, `  + ${key}: ${object2[key]}`];
+    if ((typeof value1 !== typeof value2) || (value1 !== value2)) {
+      return {
+        type: 'updated', key, value1, value2,
+      };
     }
-    return null;
+    return { type: 'unchanged', key, value: value2 };
   }));
-  const result = `{\n${getComparison.join('\n')}\n}`;
-  return result;
+  return _.sortBy(result, 'key');
 };
 
 export default getDifference;
