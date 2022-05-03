@@ -1,10 +1,10 @@
 import getDifference from './getDifference.js';
 import parser from './parsers.js';
-import stylish from './formatters/stylish.js';
+import formatter from './formatters/index.js';
 
-const genDiff = (filepath1, filepath2) => {
+const genDiff = (filepath1, filepath2, format = 'stylish') => {
   const diff = getDifference(parser(filepath1), parser(filepath2));
-  const formatted = stylish(diff);
+  const formatted = formatter(diff, format);
   return formatted;
 };
 
