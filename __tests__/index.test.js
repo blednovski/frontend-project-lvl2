@@ -9,3 +9,7 @@ test('check json comparison', () => {
 test('check yaml comparison', () => {
   expect(genDiff('file1.yml', 'file2.yml')).toEqual(readFile('json.txt'));
 });
+
+test('check plain format', () => {
+  expect(genDiff('file1.json', 'file2.json', 'plain')).toEqual(readFile('plain.txt'));
+});
