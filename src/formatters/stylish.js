@@ -26,10 +26,7 @@ const stylish = (obj) => {
       if (node.type === 'unchanged') {
         return `${indent(spaces + 1)}${node.key}: ${getString(node.value, spaces)}`;
       }
-      if (node.type === 'updated') {
-        return `${indent(spaces)}- ${node.key}: ${getString(node.value1, spaces)}\n${indent(spaces)}+ ${node.key}: ${getString(node.value2, spaces)}`;
-      }
-      return null;
+      return `${indent(spaces)}- ${node.key}: ${getString(node.value1, spaces)}\n${indent(spaces)}+ ${node.key}: ${getString(node.value2, spaces)}`;
     });
     const innerValue = lines.join('\n');
     return `{\n${innerValue}\n${indent(spaces - 1)}}`;
