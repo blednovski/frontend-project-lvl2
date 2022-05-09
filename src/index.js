@@ -1,9 +1,9 @@
 import getDifference from './getDifference.js';
-import parser from './parsers.js';
+import parse from './parsers.js';
 import formatter from './formatters/index.js';
 
-const genDiff = (filepath1, filepath2, format = 'stylish') => {
-  const diff = getDifference(parser(filepath1), parser(filepath2));
+const genDiff = (file1, file2, format = 'stylish') => {
+  const diff = getDifference(parse(file1), parse(file2));
   const formatted = formatter(diff, format);
   return formatted;
 };

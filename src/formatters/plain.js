@@ -23,7 +23,7 @@ const plain = (obj) => {
       if (node.type === 'added') {
         return `Property '${getNodeKey(node.key, ancestor)}' was added with value: ${getValue(node.value)}`;
       }
-      if (node.type === 'updated') {
+      if (node.type === 'changed') {
         return `Property '${getNodeKey(node.key, ancestor)}' was updated. From ${getValue(node.value1)} to ${getValue(node.value2)}`;
       }
       return null;

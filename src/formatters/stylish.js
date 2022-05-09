@@ -2,11 +2,11 @@ import _ from 'lodash';
 
 const indent = (spaces) => '  '.repeat(spaces);
 
-const getString = (value, spaces = 0) => {
+const stringify = (value, spaces = 0) => {
   if (!_.isObject(value)) {
     return value;
   }
-  const lines = Object.keys(value).map((node) => `${indent(spaces + 2)}  ${node}: ${getString(value[node], spaces + 2)}`);
+  const lines = Object.keys(value).map((node) => `${indent(spaces + 2)}  ${node}: ${stringify(value[node], spaces + 2)}`);
   const innerValue = lines.join('\n');
   return `{\n${innerValue}\n${indent(spaces + 1)}}`;
 };
@@ -18,15 +18,18 @@ const stylish = (obj) => {
         return `${indent(spaces)}  ${node.key}: ${iter(node.children, spaces + 2)}`;
       }
       if (node.type === 'removed') {
-        return `${indent(spaces)}- ${node.key}: ${getString(node.value, spaces)}`;
+        return `${indent(spaces)}- ${node.key}: ${stringify(node.value, spaces)}`;
       }
       if (node.type === 'added') {
-        return `${indent(spaces)}+ ${node.key}: ${getString(node.value, spaces)}`;
+        return `${indent(spaces)}+ ${node.key}: ${stringify(node.value, spaces)}`;
       }
       if (node.type === 'unchanged') {
-        return `${indent(spaces + 1)}${node.key}: ${getString(node.value, spaces)}`;
+        return `${indent(spaces + 1)}${node.key}: ${stringify(node.value, spaces)}`;
       }
-      return `${indent(spaces)}- ${node.key}: ${getString(node.value1, spaces)}\n${indent(spaces)}+ ${node.key}: ${getString(node.value2, spaces)}`;
+      if (node.type === 'changed') {
+        return `${indent(spaces)}- ${node.key}: ${stringify(node.value1, spaces)}\n${indent(spaces)}+ ${node.key}: ${stringify(node.value2, spaces)}`;
+      }
+      throw new Error(`Unknown node type '${node.type}'`);
     });
     const innerValue = lines.join('\n');
     return `{\n${innerValue}\n${indent(spaces - 1)}}`;
