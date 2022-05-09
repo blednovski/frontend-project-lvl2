@@ -4,14 +4,13 @@ import { readFile } from './utils.js';
 
 const parse = (file) => {
   const fileFormat = extname(file);
-  let result = {};
   if (fileFormat === '.json') {
-    result = JSON.parse(readFile(file));
+    return JSON.parse(readFile(file));
   }
   if (fileFormat === '.yml' || fileFormat === '.yaml') {
-    result = yaml.load(readFile(file));
+    return yaml.load(readFile(file));
   }
-  return result;
+  throw new Error(`Unsupported file format '${fileFormat}'`);
 };
 
 export default parse;
