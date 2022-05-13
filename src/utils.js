@@ -7,6 +7,6 @@ const __dirname = dirname(__filename);
 
 const getFixturePath = (filename) => resolve(__dirname, '..', '__fixtures__', filename);
 const readFile = (filename) => readFileSync(getFixturePath(filename), 'utf-8');
-const getType = (filename) => extname(filename).replace('.', '');
+const getExtension = (filename) => extname(filename).replace('.', '');
 
-export { getFixturePath, readFile, getType };
+export { getFixturePath, readFile, getExtension };

@@ -5,7 +5,7 @@ const getNodeKey = (key, ancestor) => {
   return `${ancestor}.${key}`;
 };
 
-const getValue = (value) => {
+const formatValue = (value) => {
   if (_.isObject(value)) return '[complex value]';
   if (_.isString(value)) return `'${value}'`;
   return value;
@@ -21,10 +21,10 @@ const plain = (obj) => {
         return `Property '${getNodeKey(node.key, ancestor)}' was removed`;
       }
       if (node.type === 'added') {
-        return `Property '${getNodeKey(node.key, ancestor)}' was added with value: ${getValue(node.value)}`;
+        return `Property '${getNodeKey(node.key, ancestor)}' was added with value: ${formatValue(node.value)}`;
       }
       if (node.type === 'changed') {
-        return `Property '${getNodeKey(node.key, ancestor)}' was updated. From ${getValue(node.value1)} to ${getValue(node.value2)}`;
+        return `Property '${getNodeKey(node.key, ancestor)}' was updated. From ${formatValue(node.value1)} to ${formatValue(node.value2)}`;
       }
       return null;
     })

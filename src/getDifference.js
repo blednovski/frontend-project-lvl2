@@ -15,7 +15,7 @@ const getDifference = (data1, data2) => {
     if (!_.has(data1, key)) {
       return { type: 'added', key, value: value2 };
     }
-    if ((typeof value1 !== typeof value2) || !_.isEqual(value1, value2)) {
+    if (!_.isEqual(value1, value2)) {
       return {
         type: 'changed', key, value1, value2,
       };
