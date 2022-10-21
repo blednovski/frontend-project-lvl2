@@ -1,5 +1,7 @@
 ### Gendiff
+
 CLI Application, shows a difference between two configuration files.
+
 ---
 
 ### Install
